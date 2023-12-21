@@ -437,6 +437,19 @@ pub mod pallet {
             attribute: PalletAttributes,
             value: BoundedVec<u8, T::ValueLimit>,
         },
+        ProductTraitAdded {
+            product_id: T::ProductId,
+            trait_address: T::AccountId,
+        },
+        DeviceTraitVerified {
+            product_id: T::ProductId,
+            device_id: T::DeviceId,
+            trait_address: T::AccountId,
+        },
+        DeviceActivated {
+            product_id: T::ProductId,
+            device_id: T::DeviceId,
+        },
     }
 
     #[pallet::error]
@@ -665,7 +678,7 @@ pub mod pallet {
             let caller = ensure_signed(origin)?;
             let mint_to = T::Lookup::lookup(mint_to)?;
             let device_config =
-                DeviceConfig { settings: Self::get_default_item_settings(&product_id)? };
+                DeviceConfig { settings: Self::get_default_device_settings(&product_id)? };
 
             Self::do_mint(
                 product_id,
@@ -950,7 +963,7 @@ pub mod pallet {
             config: ProductConfig,
         ) -> DispatchResult {
             T::ForceOrigin::ensure_origin(origin)?;
-            Self::do_force_collection_config(product_id, config)
+            Self::do_force_set_product_config(product_id, config)
         }
 
         /// Disallows changing the metadata or attributes of the item.
@@ -1364,6 +1377,43 @@ pub mod pallet {
             let origin = ensure_signed(origin)?;
             Self::validate_signature(&Encode::encode(&data), &signature, &signer)?;
             Self::do_set_attributes_pre_signed(origin, data, signer)
+        }
+
+        #[pallet::call_index(29)]
+        #[pallet::weight({0})]
+        pub fn add_trait(
+            origin: OriginFor<T>,
+            product_id: T::ProductId,
+            trait_address: T::AccountId,
+        ) -> DispatchResult {
+            Self::deposit_event(Event::ProductTraitAdded { product_id, trait_address });
+            Ok(())
+        }
+
+        #[pallet::call_index(30)]
+        #[pallet::weight({0})]
+        pub fn verify_trait(
+            origin: OriginFor<T>,
+            product_id: T::ProductId,
+            device_id: T::DeviceId,
+            trait_address: T::AccountId,
+            payload: BoundedVec<u8, T::ValueLimit>,
+        ) -> DispatchResult {
+            Self::deposit_event(Event::DeviceTraitVerified { product_id, device_id, trait_address });
+            Ok(())
+        }
+
+        #[pallet::call_index(31)]
+        #[pallet::weight({0})]
+        pub fn activate(
+            origin: OriginFor<T>,
+            product_id: T::ProductId,
+            device_id: T::DeviceId,
+            code: BoundedVec<u8, T::ValueLimit>,
+            signature: T::OffchainSignature,
+        ) -> DispatchResult {
+            Self::deposit_event(Event::DeviceActivated { product_id, device_id });
+            Ok(())
         }
     }
 }
