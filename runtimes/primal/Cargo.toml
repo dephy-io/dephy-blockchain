@@ -59,6 +59,7 @@ pallet-utility = { git = "https://github.com/paritytech/polkadot-sdk.git", branc
 pallet-multisig = { git = "https://github.com/paritytech/polkadot-sdk.git", branch = "master", default-features = false }
 pallet-proxy = { git = "https://github.com/paritytech/polkadot-sdk.git", branch = "master", default-features = false }
 pallet-balances = { git = "https://github.com/paritytech/polkadot-sdk.git", branch = "master", default-features = false }
+pallet-assets = { git = "https://github.com/paritytech/polkadot-sdk.git", branch = "master", default-features = false }
 pallet-vesting = { git = "https://github.com/paritytech/polkadot-sdk.git", branch = "master", default-features = false }
 
 pallet-tx-pause = { git = "https://github.com/paritytech/polkadot-sdk.git", branch = "master", default-features = false }
@@ -120,6 +121,7 @@ std = [
 	"pallet-multisig/std",
 	"pallet-proxy/std",
 	"pallet-balances/std",
+	"pallet-assets/std",
 	"pallet-transaction-payment/std",
 	"pallet-transaction-payment-rpc-runtime-api/std",
 	"pallet-skip-feeless-payment/std",
@@ -144,6 +146,7 @@ runtime-benchmarks = [
 	"pallet-multisig/runtime-benchmarks",
 	"pallet-proxy/runtime-benchmarks",
 	"pallet-balances/runtime-benchmarks",
+	"pallet-assets/runtime-benchmarks",
 	"pallet-skip-feeless-payment/runtime-benchmarks",
 	"pallet-vesting/runtime-benchmarks",
 	"pallet-treasury/runtime-benchmarks",
@@ -168,6 +171,7 @@ try-runtime = [
 	"pallet-multisig/try-runtime",
 	"pallet-proxy/try-runtime",
 	"pallet-balances/try-runtime",
+	"pallet-assets/try-runtime",
 	"pallet-transaction-payment/try-runtime",
 	"pallet-skip-feeless-payment/try-runtime",
 	"pallet-vesting/try-runtime",
